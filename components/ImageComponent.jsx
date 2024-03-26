@@ -7,13 +7,7 @@ export default function AppBgImg({ bgCover }) {
       placeholder="blur"
       alt="background Image"
       size="100vw"
-      style={{
-        objectFit: "cover",
-        zIndex: -1,
-        height: "85vh",
-        position: "absolute",
-        width: "100vw",
-      }}
+      className="object-cover z-[-1] h-[85vh] absolute w-[100vw] xl:container"
     />
   );
 }

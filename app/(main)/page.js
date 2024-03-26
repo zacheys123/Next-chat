@@ -9,6 +9,8 @@ import UserButton from "@/components/UserButton";
 import { useRouter } from "next/navigation";
 import { Footer, TextInput } from "flowbite-react";
 import left from "../../public/assets/left-image.jpg";
+import google from "../../public/assets/goggleplay.png";
+import MobileNav from "@/components/MobileNav";
 export default function Home() {
   const router = useRouter();
   const { user, isLoading } = useUser();
@@ -17,9 +19,9 @@ export default function Home() {
   }
   console.log(user);
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen xl:container">
       <ImageComponent bgCover={bgImage} />
-      <nav className="container mx-auto max-w-100vw p-3 bg-cyan-800 flex items-center justify-between">
+      <nav className="container mx-auto max-w-[100vw] xl:w-[60vw] p-3 bg-cyan-800 flex items-center justify-between">
         <span className="tracking-tighter">
           <span className=" bg-pink-100 text-red-500 font-bold p-1 rounded-b-xl shadow-red-500">
             GigMe
@@ -28,18 +30,23 @@ export default function Home() {
             Up
           </span>
         </span>
-        {user ? (
-          <UserAvatar source={user} />
-        ) : (
-          <UserButton
-            onClick={() => router.push("/api/auth/login")}
-            title="Login"
-            className="w-[100px]  bg-slate-600 border border-yellow-300 rounded-full py-2  text-white my-1 hover:bg-slate-500"
-          />
-        )}
+        <div className="hidden md:inline-flex">
+          {user ? (
+            <UserAvatar source={user} />
+          ) : (
+            <UserButton
+              onClick={() => router.push("/api/auth/login")}
+              title="Login"
+              className="w-[100px]  bg-slate-600 border border-yellow-300 rounded-full py-2  text-white my-1 hover:bg-slate-500"
+            />
+          )}
+        </div>
+        <div className="md:hidden inline-flex">
+          <MobileNav source={user} />
+        </div>
       </nav>{" "}
       <div className="h-[70vh] w-100 flex justify-center items-center">
-        <div className="fle flex-col gap-4 text-2xl text-center md:flex-row md:text-6xl">
+        <div className=" flex-col gap-4 text-2xl xl:text-7xl text-center md:flex-row md:text-6xl">
           <div>
             <span className="md:text-6xl  bg-gradient-to-r  from-orange-600 via-green-500 to-purple-100 inline-block  text-transparent  bg-clip-text">
               chat
@@ -59,7 +66,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Card className="container mx-auto max-w-[80vw] h-[230px] p-4 text-center flex flex-col gap-4">
+      <Card className="container mx-auto max-w-[80vw] h-[230px] p-4 text-center flex flex-col gap-4 xl:w-[60vw]">
         <span className="Ffont-bold tracking-tighter  text-2xl ">
           For more information on what gigmeApp is,contact us here.Send us ur
           feedback or concern.
@@ -73,13 +80,26 @@ export default function Home() {
           />
         </form>
       </Card>
-      <div className="mt-[120px] mb-[120px] flex  flex-col md:flex-row justify-center items-center">
-        {" "}
-        <Image src={left} alt="something" />
-        <div className="flex flex-col"></div>
+      <div className="mt-[120px] mb-[120px] flex  gap-4md:gap-40 flex-col md:flex-row justify-center items-center">
+        <Image src={left} alt="something" className="flex-1 m-3 rounded-full" />
+        <Card className="flex flex-col p-5 w-[50vw] my-4 text-white h-[20vh] bg-black">
+          <h1>
+            <span className="flex  ">
+              If you want to get the direct feeling and also access more data
+              and connect easily with your friends ,get this app
+            </span>
+          </h1>
+          <UserButton
+            onClick={() => console.log("Email Button clicked!!!")}
+            title="Google Play"
+            className="md:w-[20vw] mx-auto flex md:gap-1 bg-white  border border-black rounded-xl  text-white md:my-3  my-2 mb-3 md:-mb-[30px]  px-3   md:px-0 py-1 md:py-2"
+            image={google}
+            span="GET IT ON"
+          />
+        </Card>
       </div>
       <Footer container>
-        <Footer.Copyright href="#" by="Flowbite™" year={2022} />
+        <Footer.Copyright href="#" by="GigMeApp™" year={2022} />
         <Footer.LinkGroup>
           <Footer.Link href="#">About</Footer.Link>
           <Footer.Link href="#">Privacy Policy</Footer.Link>
