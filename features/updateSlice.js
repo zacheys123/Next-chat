@@ -5,12 +5,11 @@ export async function updateSlice(
   router,
   setError,
   setSuccess,
-  setLoading,
-  id
+  setLoading
 ) {
   try {
     setLoading(true);
-    const res = await fetch(`/api/user/update/${id}`, {
+    const res = await fetch(`/api/user/update/${form?.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -67,4 +67,26 @@
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+input {
+  @apply border border-gray-200 py-2 px-2
+focus:ring-0  w-full;
+}
+@layer components {
+  .navLinks {
+    @apply text-purple-600 mx-1 font-mono hover:underline decoration-orange-600 underline-offset-8 hover:opacity-55 transition-transform duration-200;
+  }
+  .isActive {
+    @apply text-white underline decoration-orange-600 underline-offset-8;
+  }
+  .mobile-input {
+    @apply p-1 -mt-[21px];
+  }
 }

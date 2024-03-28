@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { registerSlice } from "@/features/registerSlice";
 import { useGlobalContext } from "../Context/store";
+import Nav from "@/components/Nav";
 export default function Home() {
   const {
     authstate: {},
@@ -23,7 +24,9 @@ export default function Home() {
   const router = useRouter();
   const { user, isLoading } = useUser();
   useEffect(() => {
-    router.push("my/authenticate");
+    if (user) {
+      router.push("/authenticate");
+    }
   }, []);
   if (isLoading) {
     return (
@@ -40,7 +43,7 @@ export default function Home() {
   return (
     <main className="min-h-screen xl:container">
       <ImageComponent bgCover={bgImage} />
-
+      <Nav />
       <div className="h-[70vh] w-100 flex justify-center items-center">
         <div className=" flex-col gap-4 text-2xl xl:text-7xl text-center md:flex-row md:text-6xl">
           <div>

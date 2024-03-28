@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const UserAvatar = ({ source }) => {
   const router = useRouter();
   return (
-    <div className="rounded-full ">
+    <div className="rounded-full hidden md:inline-flex">
       <Dropdown
         label={
           <Image

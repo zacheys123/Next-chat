@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { NextResponse } from "next/server";
 
-export async function PUT(req) {
+export async function PUT(req, { params }) {
   const {
     firstname,
     secondname,
@@ -19,14 +19,26 @@ export async function PUT(req) {
     other,
     auth0,
   } = await req.json();
-
-  console.log(email);
+  console.log();
+  console.log({
+    firstname: firstname || "firstname",
+    secondname: secondname || "secondname",
+    city: city || "city",
+    age: age || "age",
+    phone: phone || "phone",
+    email: email || "email",
+    username: username || "username",
+    instrument: instrument || "instrument",
+    experience: experience || "experience",
+    other: other || "other",
+    auth0: auth0 || "auth0",
+  });
   if (firstname && secondname && username) {
     try {
       await connectDb();
 
-      const updatedUser = await User.updateOne(
-        { auth0Id: auth0 },
+      const updatedUser = await User.findOneAndUpdate(
+        { auth0Id: params.auth0id },
         {
           $set: {
             firstname,

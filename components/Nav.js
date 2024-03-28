@@ -23,7 +23,7 @@ const Nav = () => {
     );
   }
   return (
-    <div>
+    <div className="top-0">
       <nav className="container mx-auto max-w-[100vw] xl:w-[60vw] p-3 bg-cyan-800 flex items-center justify-between">
         <span
           className="tracking-tighter cursor-pointer"
