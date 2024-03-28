@@ -1,7 +1,12 @@
+import Nav from "@/components/Nav";
 import React from "react";
 
 const Social = () => {
-  return <div>Main Social Page</div>;
+  return (
+    <div>
+      <Nav />
+    </div>
+  );
 };
 
 export default Social;

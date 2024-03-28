@@ -11,7 +11,7 @@ const UserAvatar = ({ source }) => {
       <Dropdown
         label={
           <Image
-            src={source?.picture}
+            src={source?.picture || ""}
             alt="image"
             width={30}
             height={30}
@@ -20,16 +20,23 @@ const UserAvatar = ({ source }) => {
         }
       >
         <Dropdown.Header>
-          <span className="block text-sm text-red-500 font-bold">
+          <span className="flex flex-col text-sm text-red-500 font-bold">
             {source && source?.name}
+            <span className="text-green-500 ">
+              {source?.nickname && source?.nickname}
+            </span>
           </span>
           <span className="block truncate text-sm font-bold text-cyan-400">
             {source?.email}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item>Dashboard</Dropdown.Item>
-        <Dropdown.Item>Settings</Dropdown.Item>
-        <Dropdown.Item onClick={() => router.push(`/profile/`)}>
+        <Dropdown.Item onClick={() => router.push(`/dashboard/`)}>
+          Dashboard
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => router.push(`/settings/`)}>
+          Settings
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => router.push(`/profile/${source?.sub}`)}>
           Profile
         </Dropdown.Item>
         <Dropdown.Divider />

@@ -11,40 +11,36 @@ import { Footer, TextInput } from "flowbite-react";
 import left from "../../public/assets/left-image.jpg";
 import google from "../../public/assets/goggleplay.png";
 import MobileNav from "@/components/MobileNav";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import { registerSlice } from "@/features/registerSlice";
+import { useGlobalContext } from "../Context/store";
 export default function Home() {
+  const {
+    authstate: {},
+    setAuthState,
+  } = useGlobalContext();
   const router = useRouter();
   const { user, isLoading } = useUser();
+  useEffect(() => {
+    router.push("my/authenticate");
+  }, []);
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="h-screen w-full">
+        <div className="flex justify-center items-center h-screen flex-col">
+          <CircularProgress size="100px" />
+          <span className="mt-2 text-2xl font-bold">
+            Please wait a moment :)..
+          </span>
+        </div>
+      </div>
+    );
   }
-  console.log(user);
   return (
     <main className="min-h-screen xl:container">
       <ImageComponent bgCover={bgImage} />
-      <nav className="container mx-auto max-w-[100vw] xl:w-[60vw] p-3 bg-cyan-800 flex items-center justify-between">
-        <span className="tracking-tighter">
-          <span className=" bg-pink-100 text-red-500 font-bold p-1 rounded-b-xl shadow-red-500">
-            GigMe
-          </span>
-          <span className=" text-yellow-100 font-bold p-1 shadow-blue-500">
-            Up
-          </span>
-        </span>
-        <div className="hidden md:inline-flex">
-          {user ? (
-            <UserAvatar source={user} />
-          ) : (
-            <UserButton
-              onClick={() => router.push("/api/auth/login")}
-              title="Login"
-              className="w-[100px]  bg-slate-600 border border-yellow-300 rounded-full py-2  text-white my-1 hover:bg-slate-500"
-            />
-          )}
-        </div>
-        <div className="md:hidden inline-flex">
-          <MobileNav source={user} />
-        </div>
-      </nav>{" "}
+
       <div className="h-[70vh] w-100 flex justify-center items-center">
         <div className=" flex-col gap-4 text-2xl xl:text-7xl text-center md:flex-row md:text-6xl">
           <div>
@@ -72,7 +68,7 @@ export default function Home() {
           feedback or concern.
         </span>
         <form>
-          <TextInput />
+          <TextInput type="text" placeholder="Give us feedback" />
           <UserButton
             onClick={() => console.log("Email Button clicked!!!")}
             title="Send FeedBack"
@@ -82,7 +78,7 @@ export default function Home() {
       </Card>
       <div className="mt-[120px] mb-[120px] flex  gap-4md:gap-40 flex-col md:flex-row justify-center items-center">
         <Image src={left} alt="something" className="flex-1 m-3 rounded-full" />
-        <Card className="flex flex-col p-5 w-[50vw] my-4 text-white h-[20vh] bg-black">
+        <Card className="flex flex-col p-5 w-[80vw] md:w-[50vw] xl:w-[30vw] my-4 text-white h-[20vh] bg-black">
           <h1>
             <span className="flex  ">
               If you want to get the direct feeling and also access more data

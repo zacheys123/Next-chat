@@ -45,9 +45,13 @@ const MobileNav = ({ source }) => {
           className="flex flex-col justify-between  h-full "
         >
           <Box>
-            <h4 className="text-center mt-3 font-bold ">Welcome to GigmeApp</h4>
+            <h4 className="text-center mt-3 font-bold text-gray-700/70">
+              Welcome to GigmeApp
+            </h4>
 
-            <h5 className="">Simple way to get Gigs.</h5>
+            <h6 className="text-sm tracking-tighter font-semibold text-gray-600/80 text-center">
+              Simple way to get Gigs.
+            </h6>
             <List>
               <ListItem disablePadding>
                 <ListItemButton>
@@ -116,19 +120,21 @@ const MobileNav = ({ source }) => {
                 <ListItemIcon>
                   <Avatar src={source?.picture} alt="profile image" />
                 </ListItemIcon>
-                <Link href="/Profile">Profile</Link>
+                <Link href={`/profile/${source?.sub}`}>Profile</Link>
                 <ListItemText />
               </ListItemButton>
             </ListItem>{" "}
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {" "}
-                  <CiLogout />
-                </ListItemIcon>
-                <Link href="">Logout</Link>
-                <ListItemText />
-              </ListItemButton>
+            <ListItem disablePadding className="w-full">
+              <Link href="/api/auth/logout">
+                <ListItemButton>
+                  <ListItemIcon>
+                    {" "}
+                    <CiLogout />
+                  </ListItemIcon>
+                  Logout
+                  <ListItemText />
+                </ListItemButton>
+              </Link>
             </ListItem>
           </Box>
         </Box>
