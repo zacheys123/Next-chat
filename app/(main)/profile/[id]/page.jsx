@@ -5,21 +5,25 @@ import Image from "next/image";
 import React from "react";
 
 import Cover from "@/components/Cover";
-import Nav from "@/components/Nav";
+import GigsPosted from "@/components/GigsPosted";
+import GigsAccepted from "@/components/GigsAccepted";
+
 import Link from "next/link";
 import UserAvatar from "@/components/UserAvatar";
 import { Search } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import MobileNavProfile from "@/components/MobileNavProfile";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const { user } = useUser();
+  const router = useRouter();
   return (
     <div className="flex flex-col  h-screen">
       <nav className="container xl:w-[100vw] mx-auto   p-3  flex items-center justify-between">
         <span
           className="tracking-tighter cursor-pointer"
-          // onClick={() => router.push("/")}
+          onClick={() => router.push("/")}
         >
           <span className=" bg-cyan-300 text-purple-700 font-bold p-1 rounded-b-xl shadow-red-500">
             GigMe
@@ -35,19 +39,19 @@ const ProfilePage = () => {
           </form>
           <div className="hidden md:inline-flex">
             <Link className="navLinks" href="/">
-              Home
+              Home |
             </Link>
             <Link className="navLinks" href="/">
-              chat
+              chat |
             </Link>
             <Link className="navLinks" href="/">
-              post
+              post |
             </Link>
             <Link className="navLinks" href="/">
-              gigs
+              gigs |
             </Link>
             <Link className="navLinks" href="/">
-              settings
+              settings |
             </Link>
             <Link className="navLinks" href="/">
               faq
@@ -57,8 +61,13 @@ const ProfilePage = () => {
         <UserAvatar source={user} />
         <MobileNavProfile source={user} />
       </nav>
-      <Cover source={user} />
-      {/* <ProfileForm /> */}
+      <Cover />
+      <div className="flex gap-3">
+        {" "}
+        <ProfileForm />
+        <GigsPosted />
+        <GigsAccepted />
+      </div>
     </div>
   );
 };

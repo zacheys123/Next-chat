@@ -17,7 +17,7 @@ const Authenticate = () => {
   useEffect(() => {
     if (user) {
       registerSlice(user, router, setAuthState);
-      router.push("/mygigme");
+      router.push("/mygigme/social");
     }
   }, [user]);
   if (isLoading) {

@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
       require: true,
       unique: true,
     },
+    email2: {
+      type: String,
+      require: true,
+      unique: true,
+    },
     city: { type: String },
     instrument: { type: String },
     experience: {

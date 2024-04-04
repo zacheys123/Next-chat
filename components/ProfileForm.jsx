@@ -37,6 +37,7 @@ const ProfileForm = () => {
     phone: "",
     email: "",
     username: "",
+    email2: "",
     other: "",
     password: "",
     cpassword: "",
@@ -92,10 +93,10 @@ const ProfileForm = () => {
 
   const [otherinput, setOther] = useState(false);
   return (
-    <Card>
-      <form className="px-3 py-3 w-[340px] dark:bg-red-300 md:w-[450px]">
+    <div className="bg-green-400 h-0 ">
+      <form className="px-3 py-3 mt-[40vh] xl:mt-[50vh] w-[340px] dark:bg-red-300 md:w-[450px]">
         <h1 className="text-xl font-bold text-center mb-2 text-zinc">
-          Register here
+          Update Info here
         </h1>
         <div className="flex flex-col gap-3 py-6 px-3">
           <div className="grid grid-cols-2 gap-4">
@@ -150,6 +151,14 @@ const ProfileForm = () => {
             value={userdata?.phone}
             placeholder="Phone No"
           />{" "}
+          <TextInput
+            className="mobile-input -py-3 md:py-o w-full focus:ring-0 mt-2"
+            type="text"
+            onChange={handleInput}
+            name="email2"
+            value={userdata?.email2}
+            placeholder="Email2"
+          />
           <TextInput
             className="mobile-input -py-3 md:py-0 md:mt-1  w-full focus:ring-0 mb-2"
             type="text"
@@ -240,7 +249,7 @@ const ProfileForm = () => {
           {!loading ? "Update Data" : <Spinner color="info" />}
         </Button>
       </form>
-    </Card>
+    </div>
   );
 };
 

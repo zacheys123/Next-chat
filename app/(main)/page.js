@@ -25,9 +25,9 @@ export default function Home() {
   const { user, isLoading } = useUser();
   useEffect(() => {
     if (user) {
-      router.push("/authenticate");
+      router.push("/mygigme/social");
     }
-  }, []);
+  }, [user]);
   if (isLoading) {
     return (
       <div className="h-screen w-full">

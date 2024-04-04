@@ -81,7 +81,7 @@ focus:ring-0  w-full;
 }
 @layer components {
   .navLinks {
-    @apply text-purple-600 mx-1 font-mono hover:underline decoration-orange-600 underline-offset-8 hover:opacity-55 transition-transform duration-200;
+    @apply text-orange-400 mx-1 font-mono font-bold hover:underline decoration-orange-600 underline-offset-8 hover:opacity-55 transition-transform duration-200;
   }
   .isActive {
     @apply text-white underline decoration-orange-600 underline-offset-8;

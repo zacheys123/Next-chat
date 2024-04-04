@@ -14,12 +14,13 @@ export async function PUT(req, { params }) {
     phone,
     email,
     username,
+    email2,
     instrument,
     experience,
     other,
     auth0,
   } = await req.json();
-  console.log();
+
   console.log({
     firstname: firstname || "firstname",
     secondname: secondname || "secondname",
@@ -28,12 +29,13 @@ export async function PUT(req, { params }) {
     phone: phone || "phone",
     email: email || "email",
     username: username || "username",
+    email2: email2 || "email2",
     instrument: instrument || "instrument",
     experience: experience || "experience",
     other: other || "other",
     auth0: auth0 || "auth0",
   });
-  if (firstname && secondname && username) {
+  if (firstname && secondname && username && email2) {
     try {
       await connectDb();
 
@@ -48,6 +50,7 @@ export async function PUT(req, { params }) {
             phone,
             email,
             username,
+            email2,
             instrument,
             experience,
             other,
@@ -71,7 +74,7 @@ export async function PUT(req, { params }) {
     }
   } else {
     return NextResponse.json(
-      { message: "All Fullnames and username are required" },
+      { message: "All Fullnames and username and email2 are required" },
       {
         status: 401,
       }
