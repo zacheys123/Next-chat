@@ -9,6 +9,7 @@ const initialState = {
   errormessage: "",
   theme: false,
   authInfo: "unAuthorized",
+  toggle: false,
 };
 
 const GlobalContext = createContext(initialState);

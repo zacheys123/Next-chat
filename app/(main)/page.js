@@ -26,6 +26,8 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       router.push("/mygigme/social");
+    } else {
+      router.push("/authenticate");
     }
   }, [user]);
   if (isLoading) {

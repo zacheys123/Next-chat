@@ -44,6 +44,7 @@ const ProfileForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  console.log(id);
   const handleInput = (ev) => {
     setData({ ...userdata, [ev.target.name]: ev.target.value });
   };
@@ -86,7 +87,7 @@ const ProfileForm = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id]);
   useEffect(() => {
     form_ref.current = userdata;
   }, []);

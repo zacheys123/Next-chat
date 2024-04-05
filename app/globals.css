@@ -86,6 +86,9 @@ focus:ring-0  w-full;
   .isActive {
     @apply text-white underline decoration-orange-600 underline-offset-8;
   }
+  .active_links {
+    @apply text-white bg-orange-600 mx-1 px-1 font-mono font-bold hover:underline decoration-orange-600 underline-offset-8 hover:opacity-55 transition-transform duration-200;
+  }
   .mobile-input {
     @apply p-1 -mt-[21px];
   }

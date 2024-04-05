@@ -15,10 +15,8 @@ const Authenticate = () => {
   const { user, isLoading } = useUser();
   console.log(user);
   useEffect(() => {
-    if (user) {
-      registerSlice(user, router, setAuthState);
-      router.push("/mygigme/social");
-    }
+    registerSlice(user, router, setAuthState);
+    router.push("/mygigme/social");
   }, [user]);
   if (isLoading) {
     return (

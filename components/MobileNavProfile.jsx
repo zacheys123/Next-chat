@@ -24,7 +24,7 @@ import { CiLogout } from "react-icons/ci";
 import { FaQuestionCircle } from "react-icons/fa";
 import { FcAbout } from "react-icons/fc";
 
-const MobileNavProfile = ({ source }) => {
+const MobileNavProfile = ({ source, mobile }) => {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -32,7 +32,7 @@ const MobileNavProfile = ({ source }) => {
   };
 
   return (
-    <Box className="flex md:hidden">
+    <Box className={`flex || ${mobile} md:hidden`}>
       <Button onClick={toggleDrawer(true)}>
         {" "}
         <IoMdMenu className="inline text-black md:hidden text-2xl mx-2 cursor-pointer hover:opacity-8 hover:bg-green" />

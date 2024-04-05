@@ -1,24 +1,21 @@
 "use client";
+import { global } from "@/actions/actions";
+import { useGlobalContext } from "@/app/Context/store";
+import Nav_Links from "@/components/Nav_Links";
 import UserAvatar from "@/components/UserAvatar";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import React from "react";
+import React, { useEffect } from "react";
 
 const GigmeSocial = () => {
   const { user } = useUser();
+  const {
+    authstate: { toggle },
+    setAuthState,
+  } = useGlobalContext();
+
   return (
     <div>
-      <nav className="flex justify-between items-center p-4">
-        <span className="ml-5">
-          {" "}
-          <span className="font-georgia text-2xl text-red-500 font-extrabold bg-yellow-200">
-            G
-          </span>
-          <span>Gigme</span>
-        </span>
-        <div className="flex ">
-          <UserAvatar source={user} />
-        </div>
-      </nav>
+      <h1> Social Media</h1>
     </div>
   );
 };
