@@ -25,8 +25,6 @@ export default function Home() {
   const { user, isLoading } = useUser();
   useEffect(() => {
     if (user) {
-      router.push("/mygigme/social");
-    } else {
       router.push("/authenticate");
     }
   }, [user]);

@@ -13,7 +13,7 @@ const UserAvatar = ({ source }) => {
     setAuthState,
   } = useGlobalContext();
   const router = useRouter();
-
+  console.log(source?.picture);
   return (
     <div>
       {" "}

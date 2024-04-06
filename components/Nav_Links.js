@@ -21,6 +21,7 @@ const Nav_Links = () => {
   const [Active, setActive] = useState("home");
   let activelink;
   const active_Ref = useRef();
+  const search_Ref = useRef();
   useEffect(() => {
     active_Ref.current = activelink;
   }, []);
@@ -28,16 +29,34 @@ const Nav_Links = () => {
   useEffect(() => {
     activelink = localStorage.getItem("active");
   }, []);
-  const [username, setUsername] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const handleSearch = async () => {
-    if (!username || username.length < 0) {
-      alert("You cannot Submit an empty input");
-    } else {
-      router.push(`/mygigme/social/friends?username=${username}`);
+    try {
+      const res = await fetch(`/api/user/searchFriend`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ searchQuery }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        router.push(`/mygigme/social/friends?search=${searchQuery}`);
+        setSearchQuery("");
+      } else {
+        alert(data.message);
+        router.push(`/mygigme/social`);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
-  console.log(active_Ref.current);
+  useEffect(() => {
+    search_Ref.current = searchQuery;
+  }, []);
   const [showSearch, setSearch] = useState("false");
   return (
     <nav className="container xl:w-[100vw] mx-auto   p-3  flex items-center justify-between gap-5 md:gap-3">
@@ -55,8 +74,8 @@ const Nav_Links = () => {
       <div className="hidden md:flex gap-7 items-center justify-around ">
         <form className="hidden md:flex gap-2 items-center flex-1">
           <TextInput
-            onChange={(ev) => setUsername(ev.target.value)}
-            value={username}
+            onChange={(ev) => setSearchQuery(ev.target.value)}
+            value={searchQuery}
             type="text"
             placeholder="Find anyone/musician"
           />
@@ -156,8 +175,8 @@ const Nav_Links = () => {
         {!showSearch && (
           <form className="flex gap-2 items-center flex-1 w-[90vw]">
             <TextInput
-              onChange={(ev) => setUsername(ev.target.value)}
-              value={username}
+              onChange={(ev) => setSearchQuery(ev.target.value)}
+              value={searchQuery}
               type="text"
               placeholder="Find anyone/musician"
               className="w-full"

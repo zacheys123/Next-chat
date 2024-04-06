@@ -1,13 +1,30 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const FriendsPage = () => {
   const searchParams = useSearchParams();
-  console.log(searchParams.get("username"));
+
+  const searchQuery = searchParams.get("search");
+  const [userdata, setUserData] = useState();
+  const getUser = async () => {
+    try {
+      const res = await fetch(`/api/user/friend/${searchQuery}`);
+      const data = await res.json();
+      setUserData(userdata);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(userdata);
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <div>
-      <h1>Friends Page Going Here</h1>
+      <h1>Hello ,{userdata?.firstname}</h1>
     </div>
   );
 };

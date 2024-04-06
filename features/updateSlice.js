@@ -7,6 +7,7 @@ export async function updateSlice(
   setSuccess,
   setLoading
 ) {
+  console.log(form?.id);
   try {
     setLoading(true);
     const res = await fetch(`/api/user/update/${form?.id}`, {
@@ -22,8 +23,8 @@ export async function updateSlice(
       setSuccess(infoData?.message);
       setTimeout(() => {
         setTimeout(() => {
-          // router.push("/mygigme")},3000)
-        }, 4000);
+          router.push("/mygigme/social");
+        }, 3000);
         localStorage.removeItem("profile");
         localStorage.setItem("profile", JSON.stringify(infoData?.data));
       }, 4000);

@@ -2,7 +2,7 @@ import React from "react";
 
 const GigsPosted = () => {
   return (
-    <div>
+    <div className="w-40 bg-red-400">
       <h1>Gigs Posted</h1>
     </div>
   );
