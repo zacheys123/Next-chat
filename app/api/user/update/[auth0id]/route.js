@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function PUT(req, { params }) {
+  console.log(req);
   const {
     firstname,
     secondname,
@@ -18,9 +19,9 @@ export async function PUT(req, { params }) {
     instrument,
     experience,
     other,
-    auth0,
+    id,
   } = await req.json();
-
+  console.log(id);
   console.log({
     firstname: firstname || "firstname",
     secondname: secondname || "secondname",
@@ -33,14 +34,13 @@ export async function PUT(req, { params }) {
     instrument: instrument || "instrument",
     experience: experience || "experience",
     other: other || "other",
-    auth0: auth0 || "auth0",
   });
   if (firstname && secondname && username && email2) {
     try {
       await connectDb();
 
       const updatedUser = await User.findOneAndUpdate(
-        { auth0Id: params.auth0id },
+        { auth0Id: id },
         {
           $set: {
             firstname,
@@ -53,7 +53,6 @@ export async function PUT(req, { params }) {
             email2,
             instrument,
             experience,
-            other,
           },
         }
       );
@@ -61,15 +60,18 @@ export async function PUT(req, { params }) {
       const cookieStore = cookies();
       const token = cookieStore.get("token");
 
-      return new Response(
-        { result: updatedUser, message: "Updated Successfully" },
+      console.log(updatedUser);
+      return NextResponse.json(
+        { result: updatedUser },
+        { message: "Updated Successfully" },
         {
           status: 200,
-          headers: { "Set-Cookie": `token=${token.value}` },
-          iddle,
-        }
+        },
+
+        { headers: { "Set-Cookie": `token=${token.value}` } }
       );
     } catch (error) {
+      console.log(error);
       return NextResponse.json({ error: error.message });
     }
   } else {

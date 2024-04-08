@@ -13,7 +13,6 @@ import google from "../../public/assets/goggleplay.png";
 import MobileNav from "@/components/MobileNav";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
-import { registerSlice } from "@/features/registerSlice";
 import { useGlobalContext } from "../Context/store";
 import Nav from "@/components/Nav";
 export default function Home() {

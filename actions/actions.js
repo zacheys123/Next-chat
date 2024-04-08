@@ -3,4 +3,5 @@ export const global = {
   UPDATE: "UPDATE",
   TOGGLE: "TOGGLE",
   TOGGLEPAGES: "TOGGLEPAGES",
+  GETUSER: "GETUSER",
 };

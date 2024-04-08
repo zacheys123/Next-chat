@@ -11,7 +11,7 @@ export async function POST(req) {
   console.log(email);
   try {
     await connectDb();
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ auth0 });
     if (!existing) {
       const newUser = await User.create({
         firstname,

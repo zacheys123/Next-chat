@@ -5,6 +5,7 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 const initialState = {
   isAuthenticated: false,
   mainUser: {},
+  mainUserProfile: {},
   successmessage: "",
   errormessage: "",
   theme: false,

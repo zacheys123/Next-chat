@@ -13,13 +13,15 @@ const Cover = ({ source }) => {
       />
       <div className="absolute flex gap-3 w-[400px]">
         {" "}
-        <Image
-          src={source?.picture}
-          alt="profile photo"
-          width={160}
-          height={160}
-          className="relative md:w-160 md:h-160 z-[99] rounded-full  left-4 top-[180px]  xl:h-[100px] object-fit"
-        />
+        {source?.picture && (
+          <Image
+            src={source?.picture}
+            alt="profile photo"
+            width={60}
+            height={60}
+            className="relative md:w-160 md:h-160 z-[99] rounded-full  left-4 top-[180px]  xl:h-[100px] object-fit"
+          />
+        )}
         <label
           htmlFor="profile"
           className="text-black text-2xl absolute left-[150px] flex cursor-pointer  gap-3 w-100 top-[250px] z-[100] "

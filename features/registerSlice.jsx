@@ -21,7 +21,7 @@ export async function registerSlice(form, router, setAuthState) {
     if (res.ok) {
       setAuthState({ type: global.SUCCESS, payload: infoData?.data });
       setTimeout(() => {
-        localStorage.setItem("token", JSON.stringify(infoData?.token));
+        // localStorage.setItem("token", JSON.stringify(infoData?.token));
         localStorage.setItem("profile", JSON.stringify(infoData?.data));
       }, 3000);
     } else {
@@ -29,6 +29,7 @@ export async function registerSlice(form, router, setAuthState) {
       setTimeout(() => {
         setAuthState({ type: global.CLEAR_ERROR });
       }, 4000);
+      router.push("/mygigme/social");
       // setAuthState({ type: global.ERROR, payload: data?.message });
     }
   } catch (error) {

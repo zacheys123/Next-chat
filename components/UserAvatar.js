@@ -7,36 +7,53 @@ import { Card } from "flowbite-react";
 import { useState } from "react";
 import { useGlobalContext } from "@/app/Context/store";
 import { global } from "@/actions/actions";
+import { Avatar } from "@mui/material";
+import broken from "@/public/assets/broken-image.png";
 const UserAvatar = ({ source }) => {
   const {
     authstate: { toggle },
     setAuthState,
   } = useGlobalContext();
   const router = useRouter();
-  console.log(source?.picture);
+
+  console.log(source);
   return (
     <div>
       {" "}
       <div className=" hidden md:inline-flex cursor-pointer">
-        <Image
-          onClick={() => {
-            setAuthState({ type: global.TOGGLE, payload: !toggle });
-          }}
+        {/* <Image
+   
           src={source?.picture || ""}
           alt="image"
           width={40}
           height={40}
           className="rounded-full cursor-pointer"
-        />
+        /> */}
+        {source?.firstname && !source?.picture ? (
+          <Avatar
+            alt="profile image"
+            src={broken}
+            onClick={() => {
+              setAuthState({ type: global.TOGGLE, payload: !toggle });
+            }}
+          >
+            {source?.firstname.split("")[0]}
+          </Avatar>
+        ) : (
+          <Avatar
+            src={source?.picture}
+            onClick={() => {
+              setAuthState({ type: global.TOGGLE, payload: !toggle });
+            }}
+          />
+        )}
       </div>
       {toggle && (
         <Card className=" flex-col items-center gap-3 absolute right-10">
           <section>
-            <span className="flex flex-col text-sm text-red-500 font-bold">
-              {source && source?.name}
-              <span className="text-green-500 ">
-                {source?.nickname && source?.nickname}
-              </span>
+            <span className="flex gap-1 text-sm text-red-500 font-bold">
+              {source && source?.firstname}
+              <span>{source?.secondname && source?.secondname}</span>
             </span>
             <span className="block truncate text-sm font-bold text-cyan-400">
               {source?.email}

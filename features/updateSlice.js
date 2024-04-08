@@ -23,7 +23,7 @@ export async function updateSlice(
       setSuccess(infoData?.message);
       setTimeout(() => {
         setTimeout(() => {
-          router.push("/mygigme/social");
+          // router.push("/mygigme/social");
         }, 3000);
         localStorage.removeItem("profile");
         localStorage.setItem("profile", JSON.stringify(infoData?.data));

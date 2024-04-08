@@ -9,7 +9,7 @@ const ProfilePage = () => {
     <div className="flex flex-col  h-screen">
       <Nav_Links />
       <Cover />
-      <div className="flex gap-3">
+      <div className="flex flex-row gap-3">
         {" "}
         <ProfileForm />
         <GigsPosted />

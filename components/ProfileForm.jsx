@@ -44,7 +44,7 @@ const ProfileForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
-  console.log(id);
+
   const handleInput = (ev) => {
     setData({ ...userdata, [ev.target.name]: ev.target.value });
   };
@@ -77,11 +77,12 @@ const ProfileForm = () => {
       age: ares?.user?.age,
       phone: ares?.user?.phone,
       email: ares?.user?.email,
+      email2: ares?.user?.email2,
       username: ares?.user?.username,
-      instrument: ares?.user?.instrument,
-      experience: ares?.user?.experience,
       other: ares?.user?.other,
     });
+    setSelectedInstrument(ares?.user?.instrument);
+    setSelectedExperience(ares?.user?.experience);
     return ares;
   };
 

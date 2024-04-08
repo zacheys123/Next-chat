@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import UserAvatar from "./UserAvatar";
 import MobileNavProfile from "./MobileNavProfile";
 import { TextInput } from "flowbite-react";
@@ -15,8 +15,17 @@ import { FcAbout } from "react-icons/fc";
 import { IoIosSettings } from "react-icons/io";
 import { FaQuestionCircle } from "react-icons/fa";
 import UserButton from "./UserButton";
+import { useQuery } from "@tanstack/react-query";
+
+import { useGlobalContext } from "@/app/Context/store";
+import Axios from "axios";
 const Nav_Links = () => {
+  const {
+    authstate: { mainUserProfile },
+    setAuthState,
+  } = useGlobalContext();
   const { user } = useUser();
+  console.log(user);
   const router = useRouter();
   const [Active, setActive] = useState("home");
   let activelink;
@@ -29,19 +38,29 @@ const Nav_Links = () => {
   useEffect(() => {
     activelink = localStorage.getItem("active");
   }, []);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["userdata"],
+    queryFn: async () => {
+      const res = await Axios.get(`/api/user/getuser/${user?.sub}`);
+
+      setAuthState({ type: global.GETUSER, payload: res?.data?.user });
+      return res;
+    },
+  });
+  let formd = { searchQuery, auth0: data?.data?.user?.auth0Id };
   const [searchQuery, setSearchQuery] = useState("");
   const handleSearch = async () => {
     try {
-      const res = await fetch(`/api/user/searchFriend`, {
+      const res = await fetch(`/api/user/searchFriend/${searchQuery}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ searchQuery }),
+        body: JSON.stringify(formd),
       });
 
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         router.push(`/mygigme/social/friends?search=${searchQuery}`);
         setSearchQuery("");
@@ -57,7 +76,9 @@ const Nav_Links = () => {
   useEffect(() => {
     search_Ref.current = searchQuery;
   }, []);
+
   const [showSearch, setSearch] = useState("false");
+  if (error) return "An error has occurred: " + error.message;
   return (
     <nav className="container xl:w-[100vw] mx-auto   p-3  flex items-center justify-between gap-5 md:gap-3">
       <span
@@ -265,8 +286,8 @@ const Nav_Links = () => {
           }
         />
       </div>
-      <UserAvatar source={user} />
-      <MobileNavProfile source={user} mobile="hidden" />
+      <UserAvatar source={data?.data?.user} />
+      <MobileNavProfile source={mainUserProfile} mobile="hidden" />
     </nav>
   );
 };

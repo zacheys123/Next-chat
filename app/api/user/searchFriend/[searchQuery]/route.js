@@ -3,13 +3,14 @@ import User from "@/models/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { searchQuery } = await req.json();
-  console.log(searchQuery);
+  const { searchQuery, auth0 } = await req.json();
+  console.log(req.query);
   if (!searchQuery || searchQuery.length < 0 || searchQuery === "undefined") {
     return NextResponse.json({ message: "Input is required" }, { status: 403 });
   } else {
     try {
       await connectDb();
+      // const newsearchquery = req.query.search;
       const user = await User.findOne({
         $or: [
           { firstname: searchQuery },
@@ -20,7 +21,7 @@ export async function POST(req) {
         ],
       })
         .collation({ locale: "en", strength: 2 })
-        .select("username firstname auth0Id _id secondname instrument email")
+        .findOne({ auth0Id: { $en: auth0 } })
         .exec();
       if (!user || user.length <= 0) {
         return NextResponse.json(
@@ -34,3 +35,13 @@ export async function POST(req) {
     }
   }
 }
+
+// const user = await User.findOne({
+//   $or: [
+//     { firstname: { $regex: req.query.search, $options: "i" } },
+//     { secondname: { $regex: req.query.search, $options: "i" } },
+//     { firstname: { $regex: req.query.search, $options: "i" } },
+//     { firstname: { $regex: req.query.search, $options: "i" } },
+//   ],
+// });
+// .find({ _id: { $ne: req.query._id } });
