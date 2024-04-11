@@ -11,6 +11,7 @@ const initialState = {
   theme: false,
   authInfo: "unAuthorized",
   toggle: false,
+  allusers: [],
 };
 
 const GlobalContext = createContext(initialState);

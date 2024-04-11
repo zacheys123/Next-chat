@@ -9,8 +9,10 @@ export const authReducer = (state, action) => {
       return { ...state, toggle: action.payload };
 
     case global.GETUSER:
-      console.log("hello");
       return { ...state, mainUserProfile: action.payload };
+
+    case global.GETUSERS:
+      return { ...state, allusers: [...state.allusers, action.payload] };
 
     default:
       return state;

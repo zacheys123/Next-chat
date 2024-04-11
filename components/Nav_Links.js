@@ -16,21 +16,23 @@ import { IoIosSettings } from "react-icons/io";
 import { FaQuestionCircle } from "react-icons/fa";
 import UserButton from "./UserButton";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { useGlobalContext } from "@/app/Context/store";
 import Axios from "axios";
 const Nav_Links = () => {
   const {
-    authstate: { mainUserProfile },
+    authstate: { mainUserProfile, allusers },
     setAuthState,
   } = useGlobalContext();
   const { user } = useUser();
-  console.log(user);
+
   const router = useRouter();
   const [Active, setActive] = useState("home");
   let activelink;
   const active_Ref = useRef();
-  const search_Ref = useRef();
+  const search_Ref = useRef("");
+
   useEffect(() => {
     active_Ref.current = activelink;
   }, []);
@@ -38,6 +40,8 @@ const Nav_Links = () => {
   useEffect(() => {
     activelink = localStorage.getItem("active");
   }, []);
+
+  // React query function tto get current User
   const { data, isLoading, error } = useQuery({
     queryKey: ["userdata"],
     queryFn: async () => {
@@ -47,23 +51,38 @@ const Nav_Links = () => {
       return res;
     },
   });
-  let formd = { searchQuery, auth0: data?.data?.user?.auth0Id };
-  const [searchQuery, setSearchQuery] = useState("");
+
+  //
+  // Get all users
+  const { data: alldata, isLoading: allusersloading } = useQuery({
+    queryKey: ["alluserdata"],
+    queryFn: async () => {
+      const res = await Axios.get(`/api/user/getAllusers`);
+
+      return res;
+    },
+  });
+
+  //
+  useEffect(() => {
+    setAuthState({ type: global.GETUSERS, payload: alldata });
+  }, []);
+  console.log(allusers);
   const handleSearch = async () => {
     try {
-      const res = await fetch(`/api/user/searchFriend/${searchQuery}`, {
+      const res = await fetch(`/api/user/searchFriend/${search_Ref.current}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formd),
+        body: JSON.stringify({ search_Ref, auth0: user?.sub }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        router.push(`/mygigme/social/friends?search=${searchQuery}`);
-        setSearchQuery("");
+        router.push(`/mygigme/social/friends?search=${search_Ref.current}`);
+        search_Ref.current = "";
       } else {
         alert(data.message);
         router.push(`/mygigme/social`);
@@ -73,11 +92,31 @@ const Nav_Links = () => {
     }
   };
 
-  useEffect(() => {
-    search_Ref.current = searchQuery;
-  }, []);
-
   const [showSearch, setSearch] = useState("false");
+  const searchFn = (searchkey) => {
+    let sorteddata = alldata?.data?.results;
+    let search = search_Ref.current.toString().toLowerCase();
+
+    sorteddata = sorteddata?.filter((newdata) => {
+      if (searchkey !== undefined || searchkey?.length > 0 || searchkey) {
+        if (
+          newdata.firstname?.toLowerCase().includes(searchkey) ||
+          newdata.secondname?.toLowerCase().includes(searchkey) ||
+          newdata.username?.toLowerCase().includes(searchkey) ||
+          newdata.piano?.toLowerCase().includes(searchkey)
+        ) {
+          // console.log(sorteddata[0]);
+          return sorteddata;
+        } else {
+          console.log("user not found");
+        }
+      } else {
+        console.log("empty");
+      }
+    });
+    return sorteddata;
+  };
+
   if (error) return "An error has occurred: " + error.message;
   return (
     <nav className="container xl:w-[100vw] mx-auto   p-3  flex items-center justify-between gap-5 md:gap-3">
@@ -95,15 +134,31 @@ const Nav_Links = () => {
       <div className="hidden md:flex gap-7 items-center justify-around ">
         <form className="hidden md:flex gap-2 items-center flex-1">
           <TextInput
-            onChange={(ev) => setSearchQuery(ev.target.value)}
-            value={searchQuery}
+            ref={search_Ref}
             type="text"
             placeholder="Find anyone/musician"
+            onKeyDown={(ev) => searchFn(ev.target.value)}
           />
           <Search
             onClick={handleSearch}
             className="text-slate-400 font-bold cursor-pointer"
           />
+          {searchFn() &&
+            searchFn()?.map((allusersdata) => {
+              return (
+                <Link
+                  key={allusersdata._id}
+                  href={`/mygigme/social/friends?search=${search_Ref.current.toString()}`}
+                  onClick={() => {
+                    setActive("chat");
+                    localStorage.setItem("active", Active);
+                  }}
+                  className="h-[100px] bg-green z-1"
+                >
+                  {allusersdata?.firstname} {allusersdata?.secondname}
+                </Link>
+              );
+            })}
         </form>
         <div className="hidden md:inline-flex">
           <Link
@@ -120,7 +175,7 @@ const Nav_Links = () => {
           </Link>
           <Link
             className={
-              !active_Ref.current === "chat" ? "navLinks" : "active_links"
+              active_Ref.current === "chat" ? "navLinks" : "active_links"
             }
             href="/mygigme/chat"
             onClick={() => {
@@ -286,7 +341,7 @@ const Nav_Links = () => {
           }
         />
       </div>
-      <UserAvatar source={data?.data?.user} />
+      <UserAvatar source={data?.data?.user} loading={isLoading} />
       <MobileNavProfile source={mainUserProfile} mobile="hidden" />
     </nav>
   );

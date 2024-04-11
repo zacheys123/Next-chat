@@ -13,11 +13,10 @@ const Authenticate = () => {
   } = useGlobalContext();
   const router = useRouter();
   const { user, isLoading } = useUser();
-  console.log(user);
+
   useEffect(() => {
     registerSlice(user, router, setAuthState);
-    router.push("/mygigme/social");
-  }, [user]);
+  }, [user, router, setAuthState]);
   if (isLoading) {
     return (
       <div className="h-screen w-full">

@@ -8,10 +8,10 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const { email, firstname, secondname, picture, auth0 } = await req.json();
 
-  console.log(email);
+  console.log(auth0);
   try {
     await connectDb();
-    const existing = await User.findOne({ auth0 });
+    const existing = await User.findOne({ auth0Id: auth0 });
     if (!existing) {
       const newUser = await User.create({
         firstname,

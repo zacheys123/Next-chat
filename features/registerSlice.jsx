@@ -24,6 +24,7 @@ export async function registerSlice(form, router, setAuthState) {
         // localStorage.setItem("token", JSON.stringify(infoData?.token));
         localStorage.setItem("profile", JSON.stringify(infoData?.data));
       }, 3000);
+      router.push("/mygigme/social");
     } else {
       // setAuthState({ type: global.CLEAR_SUCCESS });
       setTimeout(() => {
