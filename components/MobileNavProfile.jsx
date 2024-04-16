@@ -118,9 +118,9 @@ const MobileNavProfile = ({ source, mobile }) => {
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  <Avatar src={source?.picture} alt="profile image" />
+                  <Avatar src="" alt="profile image" />
                 </ListItemIcon>
-                <Link href={`/profile/${source?.sub}`}>Profile</Link>
+                <Link href="">Profile</Link>
                 <ListItemText />
               </ListItemButton>
             </ListItem>{" "}

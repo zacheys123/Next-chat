@@ -16,9 +16,9 @@ import { FaQuestionCircle } from "react-icons/fa";
 import UserButton from "./UserButton";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import { useGlobalContext } from "@/app/Context/store";
 import Axios from "axios";
+
 const Nav_Links = () => {
   const {
     authstate: { mainUserProfile, allusers },
@@ -59,27 +59,25 @@ const Nav_Links = () => {
   //
 
   const handleSearch = async () => {
-    try {
-      const res = await fetch(`/api/user/searchFriend/${search_Ref.current}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ search_Ref, auth0: user?.sub }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        router.push(`/mygigme/social/friends?search=${search_Ref.current}`);
-        search_Ref.current = "";
-      } else {
-        alert(data.message);
-        router.push(`/mygigme/social`);
-      }
-    } catch (error) {
-      alert(error.message);
-    }
+    // try {
+    //   const res = await fetch(`/api/user/searchFriend/${search_Ref.current}`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ search_Ref, auth0: user?.sub }),
+    //   });
+    //   const data = await res.json();
+    //   if (res.ok) {
+    //     router.push(`/mygigme/social/friends?search=${search_Ref.current}`);
+    //     search_Ref.current = "";
+    //   } else {
+    //     alert(data.message);
+    //     router.push(`/mygigme/social`);
+    //   }
+    // } catch (error) {
+    //   alert(error.message);
+    // }
   };
 
   const [showSearch, setSearch] = useState("false");
