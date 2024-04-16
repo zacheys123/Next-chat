@@ -2,46 +2,45 @@ import mongoose from "mongoose";
 import { models } from "mongoose";
 const userSchema = new mongoose.Schema(
   {
-    auth0Id: {
+    clerkId: {
       type: String,
       required: true,
-
       unique: true,
     },
     picture: {
       type: String,
+      required: true,
     },
     firstname: {
       type: String,
     },
-    secondname: { type: String },
+    lastname: { type: String, required: true },
     email: {
       type: String,
       require: true,
       unique: true,
     },
-    email2: {
-      type: String,
-      require: true,
-      unique: true,
-    },
-    city: { type: String },
-    instrument: { type: String },
+    city: { type: mongoose.Schemas.Types.ObjectId, ref: "user" },
+    instrument: { type: mongoose.Schemas.Types.ObjectId, ref: "user" },
     experience: {
-      type: String,
+      type: mongoose.Schemas.Types.ObjectId,
+      ref: "user",
     },
-    age: { type: String },
     phone: {
       type: String,
     },
 
     username: {
       type: String,
+      require: true,
+      unique: true,
     },
-    other: {
-      type: String,
+    gigPosts: {
+      type: [{ type: mongoose.Schemas.Types.ObjectId, ref: "gigs" }],
+      default: [],
     },
-    password: { type: String },
+
+    isTaken: { type: mongoose.Schemas.Types.ObjectId, ref: "gigs" },
   },
   { timestamps: true }
 );

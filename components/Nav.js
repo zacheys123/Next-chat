@@ -1,19 +1,22 @@
 "use client";
 import { useEffect } from "react";
 import UserAvatar from "./UserAvatar";
-import { UserButton, auth } from "@clerk/nextjs";
+import { UserButton, auth, useAuth } from "@clerk/nextjs";
 import MobileNav from "./MobileNav";
 import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { CircularProgress } from "@mui/material";
 import { useGlobalContext } from "@/app/Context/store";
+import { useUser } from "@clerk/nextjs";
 const Nav = () => {
   const {
     authstate: { mainUserProfile },
     setAuthState,
   } = useGlobalContext();
   const router = useRouter();
-
+  const { isLoaded, userId, sessionId, getToken } = useAuth();
+  console.log(userId);
+  const { isSignedIn, user } = useUser();
+  console.log(user);
   // const getUser = async () => {
   //   const res = await fetch(
   //     `/api/user/getuser/${user?.sub}`,
@@ -33,18 +36,18 @@ const Nav = () => {
   // useEffect(() => {
   //   getUser();
   // }, [user?.sub]);
-  // if (isLoading) {
-  //   return (
-  //     <div className="h-screen w-full">
-  //       <div className="flex justify-center items-center h-screen flex-col">
-  //         <CircularProgress size="100px" />
-  //         <span className="mt-2 text-sm font-bold">
-  //           Authenticate User,more actions underway :)..
-  //         </span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!isLoaded) {
+    return (
+      <div className="h-screen w-full bg-blue-900">
+        <div className="flex justify-center items-center h-screen flex-col">
+          <CircularProgress size="100px" />
+          <span className="mt-2 text-base text-white font-bold">
+            Authenticate User,more actions underway :)..
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="top-0">
@@ -60,7 +63,7 @@ const Nav = () => {
             Up
           </span>
         </span>
-
+        <span></span>
         <UserButton afterSignOutUrl="/sign-in" />
       </nav>{" "}
     </div>
