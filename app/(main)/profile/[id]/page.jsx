@@ -11,7 +11,6 @@ const ProfilePage = () => {
       <Cover />
       <div className="flex flex-row gap-3">
         {" "}
-        <ProfileForm />
         <GigsPosted />
         <GigsAccepted />
       </div>

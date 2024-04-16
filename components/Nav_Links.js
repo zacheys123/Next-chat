@@ -6,7 +6,6 @@ import MobileNavProfile from "./MobileNavProfile";
 import { TextInput } from "flowbite-react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
@@ -25,7 +24,6 @@ const Nav_Links = () => {
     authstate: { mainUserProfile, allusers },
     setAuthState,
   } = useGlobalContext();
-  const { user } = useUser();
 
   const router = useRouter();
   const [Active, setActive] = useState("home");
@@ -38,34 +36,25 @@ const Nav_Links = () => {
   }, []);
 
   useEffect(() => {
-    activelink = localStorage.getItem("active");
+    active_Ref.current = localStorage.getItem("active");
   }, []);
 
   // React query function tto get current User
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["userdata"],
-    queryFn: async () => {
-      const res = await Axios.get(`/api/user/getuser/${user?.sub}`);
-
-      setAuthState({ type: global.GETUSER, payload: res?.data?.user });
-      return res;
-    },
-  });
 
   //
   // Get all users
-  const {
-    data: alldata,
-    isLoading: allusersloading,
-    error: errorallusers,
-  } = useQuery({
-    queryKey: ["alluserdata"],
-    queryFn: async () => {
-      const res = await Axios.get(`/api/user/getAllusers`);
+  // const {
+  //   data: alldata,
+  //   isLoading: allusersloading,
+  //   error: errorallusers,
+  // } = useQuery({
+  //   queryKey: ["alluserdata"],
+  //   queryFn: async () => {
+  //     const res = await Axios.get(`/api/user/getAllusers`);
 
-      return res;
-    },
-  });
+  //     return res;
+  //   },
+  // });
 
   //
 
@@ -95,27 +84,26 @@ const Nav_Links = () => {
 
   const [showSearch, setSearch] = useState("false");
   const searchFn = (searchkey) => {
-    let sorteddata = alldata?.data?.results;
-    let search = search_Ref.current.toString().toLowerCase();
-
-    sorteddata = sorteddata?.filter((newdata) => {
-      if (searchkey !== undefined || searchkey?.length > 0 || searchkey) {
-        if (
-          newdata.firstname?.toLowerCase().includes(searchkey) ||
-          newdata.secondname?.toLowerCase().includes(searchkey) ||
-          newdata.username?.toLowerCase().includes(searchkey) ||
-          newdata.piano?.toLowerCase().includes(searchkey)
-        ) {
-          // console.log(sorteddata[0]);
-          return sorteddata;
-        } else {
-          console.log("user not found");
-        }
-      } else {
-        console.log("empty");
-      }
-    });
-    return sorteddata;
+    // let sorteddata = alldata?.data?.results;
+    // let search = search_Ref.current.toString().toLowerCase();
+    // sorteddata = sorteddata?.filter((newdata) => {
+    //   if (searchkey !== undefined || searchkey?.length > 0 || searchkey) {
+    //     if (
+    //       newdata.firstname?.toLowerCase().includes(searchkey) ||
+    //       newdata.secondname?.toLowerCase().includes(searchkey) ||
+    //       newdata.username?.toLowerCase().includes(searchkey) ||
+    //       newdata.piano?.toLowerCase().includes(searchkey)
+    //     ) {
+    //       // console.log(sorteddata[0]);
+    //       return sorteddata;
+    //     } else {
+    //       console.log("user not found");
+    //     }
+    //   } else {
+    //     console.log("empty");
+    //   }
+    // });
+    // return sorteddata;
   };
   if (errorallusers || error) {
     router.push("/");
