@@ -3,6 +3,7 @@ import { ThemeModeScript } from "flowbite-react";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { GlobalProvider } from "./Context/store";
 import QueryProv from "@/components/provider";
+import { ClerkProvider } from "@clerk/nextjs";
 export const metadata = {
   title: "GigMeApp",
   description: "Connect to Musicians",
@@ -10,7 +11,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <UserProvider>
+    <ClerkProvider>
       <QueryProv>
         <GlobalProvider>
           <html lang="en">
@@ -18,6 +19,6 @@ export default function RootLayout({ children }) {
           </html>
         </GlobalProvider>
       </QueryProv>
-    </UserProvider>
+    </ClerkProvider>
   );
 }

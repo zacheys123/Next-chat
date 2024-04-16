@@ -15,10 +15,9 @@ import { HiInformationCircle } from "react-icons/hi";
 import { updateSlice } from "@/features/updateSlice";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { TiTick } from "react-icons/ti";
-
+import { useQuery } from "@tanstack/react-query";
 import { useGlobalContext } from "@/app/Context/store";
 import { useUser } from "@auth0/nextjs-auth0/client";
-
 const ProfileForm = () => {
   const {
     authstate: { errormessage, successmessage },
@@ -38,9 +37,6 @@ const ProfileForm = () => {
     email: "",
     username: "",
     email2: "",
-    other: "",
-    password: "",
-    cpassword: "",
   });
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -48,15 +44,18 @@ const ProfileForm = () => {
   const handleInput = (ev) => {
     setData({ ...userdata, [ev.target.name]: ev.target.value });
   };
+  const newdata = { ...userdata, experience, instrument, id };
+
   const handleUpdate = async (event) => {
     event.preventDefault();
-    const newdata = { ...userdata, experience, instrument, id };
 
+    console.log(newdata);
     updateSlice(newdata, router, setError, setSuccess, setLoading);
   };
 
   const form_ref = useRef();
 
+  // get current user data
   const getUser = async () => {
     const res = await fetch(
       `/api/user/getuser/${id}`,
@@ -69,7 +68,6 @@ const ProfileForm = () => {
       { cache: "no-store" }
     );
     let ares = await res.json();
-    console.log(ares);
     setData({
       firstname: ares?.user?.firstname,
       secondname: ares?.user?.secondname,
@@ -79,24 +77,49 @@ const ProfileForm = () => {
       email: ares?.user?.email,
       email2: ares?.user?.email2,
       username: ares?.user?.username,
-      other: ares?.user?.other,
     });
-    setSelectedInstrument(ares?.user?.instrument);
-    setSelectedExperience(ares?.user?.experience);
-    return ares;
+    setSelectedInstrument(data?.data?.user?.instrument);
+    setSelectedExperience(data?.data?.user?.experience);
+    console.log(ares);
   };
+  const { data, isLoading } = useQuery({
+    queryKey: ["userdata"],
+    queryFn: async () => {
+      const ares = await Axios.get(`/api/user/getuser/${user?.sub}`);
+      console.log(ares);
 
+      return ares;
+    },
+  });
   useEffect(() => {
-    getUser();
-  }, [id]);
+    console.log(data);
+    setData({
+      firstname: data?.data?.user?.firstname,
+      secondname: data?.data?.user?.secondname,
+      city: data?.data?.user?.city,
+      age: data?.data?.user?.age,
+      phone: data?.data?.user?.phone,
+      email: data?.data?.user?.email,
+      email2: data?.data?.user?.email2,
+      username: data?.data?.user?.username,
+    });
+    setSelectedInstrument(data?.data?.user?.instrument);
+    setSelectedExperience(data?.data?.user?.experience);
+  }, []);
   useEffect(() => {
     form_ref.current = userdata;
   }, []);
-
-  const [otherinput, setOther] = useState(false);
+  let checkemail = useRef();
+  useEffect(() => {
+    checkemail.current = userdata?.email?.split("").includes("@");
+  }, []);
+  console.log(checkemail);
   return (
     <div className="bg-green-400 h-0 ">
-      <form className="px-3 py-3 mt-[40vh] xl:mt-[50vh] w-[340px] dark:bg-red-300 md:w-[450px]">
+      <form
+        className="px-3 py-3 mt-[40vh] xl:mt-[50vh] w-[340px] dark:bg-red-300 md:w-[450px]"
+        onSubmit={handleUpdate}
+      >
         <h1 className="text-xl font-bold text-center mb-2 text-zinc">
           Update Info here
         </h1>
@@ -127,6 +150,8 @@ const ProfileForm = () => {
               name="email"
               value={userdata?.email}
               placeholder="Email Address "
+              disabled={checkemail.current}
+              readOnly={checkemail.current}
             />{" "}
             <TextInput
               className="mobile-input -py-3 md:py-o w-full focus:ring-0 mb-2"
@@ -218,17 +243,6 @@ const ProfileForm = () => {
               <option value="less">less than 2yrs</option>
               <option value="noExp">No Experience</option>
             </Select>
-            {otherinput && (
-              <Textarea
-                name="other"
-                value={userdata.other}
-                onChange={handleInput}
-                placeholder="Other Instrument /instruments..."
-                required
-                rows={4}
-                className="resize-none mt-3"
-              ></Textarea>
-            )}
           </div>
           {error && (
             <Alert color="failure" icon={HiInformationCircle}>
@@ -246,7 +260,6 @@ const ProfileForm = () => {
           gradientMonochrome="info"
           className="mb-3 w-full"
           type="submit"
-          onClick={handleUpdate}
         >
           {!loading ? "Update Data" : <Spinner color="info" />}
         </Button>

@@ -9,7 +9,8 @@ import { useGlobalContext } from "@/app/Context/store";
 import { global } from "@/actions/actions";
 import { Avatar } from "@mui/material";
 import broken from "@/public/assets/broken-image.png";
-const UserAvatar = ({ source, loading }) => {
+import { useQuery } from "@tanstack/react-query";
+const UserAvatar = ({ loading }) => {
   const {
     authstate: { toggle },
     setAuthState,
@@ -17,9 +18,24 @@ const UserAvatar = ({ source, loading }) => {
   const router = useRouter();
 
   // console.log(source);
+  const {
+    data,
+    isLoading,
+    error: erroruser,
+  } = useQuery({
+    queryKey: ["userdata"],
+    queryFn: async () => {
+      const ares = await Axios.get(`/api/user/getuser/${id}`);
+
+      return ares;
+    },
+  });
+
+  const source = data?.data?.user;
+  console.log(source);
   return (
     <>
-      {!loading ? (
+      {!isLoading ? (
         <div>
           {" "}
           <div className=" hidden md:inline-flex cursor-pointer">
@@ -83,7 +99,7 @@ const UserAvatar = ({ source, loading }) => {
               <span
                 className="font-serif font-normal text-sm cursor-pointer p-2 hover:bg-gray-200/60 transition-opacity duration-75"
                 onClick={() => {
-                  router.push(`/profile/${source?.sub}`);
+                  router.push(`/profile/${data?.data?.user?.auth0Id}`);
                   setAuthState({ type: global.TOGGLE, payload: !toggle });
                 }}
               >

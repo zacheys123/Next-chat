@@ -20,25 +20,19 @@ export default function Home() {
     authstate: {},
     setAuthState,
   } = useGlobalContext();
-  const router = useRouter();
-  const { user, isLoading } = useUser();
-  useEffect(() => {
-    if (user) {
-      router.push("/authenticate");
-    }
-  }, [user]);
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full">
-        <div className="flex justify-center items-center h-screen flex-col">
-          <CircularProgress size="100px" />
-          <span className="mt-2 text-2xl font-bold">
-            Please wait a moment :)..
-          </span>
-        </div>
-      </div>
-    );
-  }
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="h-screen w-full">
+  //       <div className="flex justify-center items-center h-screen flex-col">
+  //         <CircularProgress size="100px" />
+  //         <span className="mt-2 text-2xl font-bold">
+  //           Please wait a moment :)..
+  //         </span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   return (
     <main className="min-h-screen xl:container">
       <ImageComponent bgCover={bgImage} />

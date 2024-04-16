@@ -92,4 +92,10 @@ focus:ring-0  w-full;
   .mobile-input {
     @apply p-1 -mt-[21px];
   }
+  .cl-formButtonPrimary {
+    @apply bg-purple-500;
+  }
+  .cl-formButtonPrimary:hover {
+    @apply bg-pink-500;
+  }
 }

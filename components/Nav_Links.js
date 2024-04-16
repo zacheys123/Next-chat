@@ -54,7 +54,11 @@ const Nav_Links = () => {
 
   //
   // Get all users
-  const { data: alldata, isLoading: allusersloading } = useQuery({
+  const {
+    data: alldata,
+    isLoading: allusersloading,
+    error: errorallusers,
+  } = useQuery({
     queryKey: ["alluserdata"],
     queryFn: async () => {
       const res = await Axios.get(`/api/user/getAllusers`);
@@ -64,10 +68,7 @@ const Nav_Links = () => {
   });
 
   //
-  useEffect(() => {
-    setAuthState({ type: global.GETUSERS, payload: alldata });
-  }, []);
-  console.log(allusers);
+
   const handleSearch = async () => {
     try {
       const res = await fetch(`/api/user/searchFriend/${search_Ref.current}`, {
@@ -116,10 +117,11 @@ const Nav_Links = () => {
     });
     return sorteddata;
   };
-
-  if (error) return "An error has occurred: " + error.message;
+  if (errorallusers || error) {
+    router.push("/");
+  }
   return (
-    <nav className="container xl:w-[100vw] mx-auto   p-3  flex items-center justify-between gap-5 md:gap-3">
+    <nav className="container xl:w-[100vw] mx-auto  p-3  flex items-center justify-between gap-5 md:gap-3">
       <span
         className={showSearch ? "tracking-tighter cursor-pointer" : "hidden"}
         onClick={() => router.push("/")}
@@ -132,33 +134,38 @@ const Nav_Links = () => {
         </span>
       </span>
       <div className="hidden md:flex gap-7 items-center justify-around ">
-        <form className="hidden md:flex gap-2 items-center flex-1">
-          <TextInput
-            ref={search_Ref}
-            type="text"
-            placeholder="Find anyone/musician"
-            onKeyDown={(ev) => searchFn(ev.target.value)}
-          />
-          <Search
-            onClick={handleSearch}
-            className="text-slate-400 font-bold cursor-pointer"
-          />
-          {searchFn() &&
-            searchFn()?.map((allusersdata) => {
-              return (
-                <Link
-                  key={allusersdata._id}
-                  href={`/mygigme/social/friends?search=${search_Ref.current.toString()}`}
-                  onClick={() => {
-                    setActive("chat");
-                    localStorage.setItem("active", Active);
-                  }}
-                  className="h-[100px] bg-green z-1"
-                >
-                  {allusersdata?.firstname} {allusersdata?.secondname}
-                </Link>
-              );
-            })}
+        <form className="hidden md:flex gap-2 items-center flex-1v  md:flex-col">
+          <div className="flex gap-3 justify-center items-center">
+            <TextInput
+              ref={search_Ref}
+              type="text"
+              placeholder="Find anyone/instrument.username"
+              onKeyDown={(ev) => searchFn(ev.target.value)}
+            />
+            <Search
+              onClick={handleSearch}
+              className="text-slate-400 font-bold cursor-pointer"
+            />
+          </div>
+          <>
+            {" "}
+            {searchFn() &&
+              searchFn()?.map((allusersdata) => {
+                return (
+                  <Link
+                    key={allusersdata._id}
+                    href={`/mygigme/social/friends?search=${search_Ref.current.toString()}`}
+                    onClick={() => {
+                      setActive("chat");
+                      localStorage.setItem("active", Active);
+                    }}
+                    className="h-[100px] bg-green z-1 absolute"
+                  >
+                    {allusersdata?.firstname} {allusersdata?.secondname}
+                  </Link>
+                );
+              })}
+          </>
         </form>
         <div className="hidden md:inline-flex">
           <Link

@@ -18,10 +18,9 @@ export async function PUT(req, { params }) {
     email2,
     instrument,
     experience,
-    other,
     id,
   } = await req.json();
-  console.log(id);
+  console.log(firstname, secondname);
   console.log({
     firstname: firstname || "firstname",
     secondname: secondname || "secondname",
@@ -33,13 +32,12 @@ export async function PUT(req, { params }) {
     email2: email2 || "email2",
     instrument: instrument || "instrument",
     experience: experience || "experience",
-    other: other || "other",
   });
   if (firstname && secondname && username && email2) {
     try {
       await connectDb();
 
-      const updatedUser = await User.findOneAndUpdate(
+      await User.findOneAndUpdate(
         { auth0Id: id },
         {
           $set: {
@@ -57,18 +55,15 @@ export async function PUT(req, { params }) {
         }
       );
 
-      const cookieStore = cookies();
-      const token = cookieStore.get("token");
-
-      console.log(updatedUser);
+      const user = await User.findOne({ auth0Id: id });
+      console.log(user);
       return NextResponse.json(
-        { result: updatedUser },
         { message: "Updated Successfully" },
+        { result: user },
+
         {
           status: 200,
-        },
-
-        { headers: { "Set-Cookie": `token=${token.value}` } }
+        }
       );
     } catch (error) {
       console.log(error);
@@ -76,7 +71,7 @@ export async function PUT(req, { params }) {
     }
   } else {
     return NextResponse.json(
-      { message: "All Fullnames and username and email2 are required" },
+      { message: "Fullnames and username and email2 are required" },
       {
         status: 401,
       }
